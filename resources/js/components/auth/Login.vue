@@ -6,13 +6,13 @@
             </h2>
             <form @submit="handleSubmit">
                 <div class="mb-4">
-                    <label for="username" class="block text-gray-600">Username</label>
+                    <label for="email" class="block text-gray-600">Email</label>
                     <input
-                        id="username"
-                        type="text"
+                        id="email"
+                        type="email"
                         class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder="Enter your username"
-                        v-model="username"
+                        placeholder="Enter your email"
+                        v-model="email"
                         @input="clearFormError"
                         required
                     />
@@ -52,7 +52,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const error = ref(null);
-const username = ref("");
+const email = ref("");
 const password = ref("");
 
 const handleSubmit = async (e) => {
@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
 
     try {
         const { data } = await axios.post("/api/login", {
-            username: username.value,
+            email: email.value,
             password: password.value,
         });
 
@@ -76,8 +76,8 @@ const handleSubmit = async (e) => {
 };
 
 const validateForm = () => {
-    if (!username.value || !password.value) {
-        error.value = "Please enter username and password";
+    if (!email.value || !password.value) {
+        error.value = "Please enter your email and password";
         return false;
     }
 
