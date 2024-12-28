@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\ApiResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +28,15 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        /**
+         * handle validation errors response in order to standardize the response format
+         */
+        if ($exception instanceof ValidationException) {
+            return ApiResponse::error('Validation errors.', $exception->errors(), 422);
+        }
     }
 }
