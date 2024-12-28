@@ -76,7 +76,7 @@ const handleSubmit = async (e) => {
             password: password.value,
         });
 
-        router.push({ name: 'Dashboard' });
+        router.push({ name: 'EventList' });
     } catch (err) {
         error.value = err.message;
     } finally {
