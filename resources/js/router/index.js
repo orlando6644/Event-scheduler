@@ -4,6 +4,9 @@ import store from '../store';
 import Login from '../components/auth/Login.vue';
 import Dashboard from '../components/dashboard/Dashboard.vue';
 
+// lazy loading events components for better performance
+const EventCreate = () => import('../components/dashboard/events/EventCreate.vue');
+
 const routes = [
     {
         path: '/',
@@ -20,7 +23,19 @@ const routes = [
         name: 'Dashboard',
         component: Dashboard,
         meta: { requiresAuth: true },
-    }
+        children: [
+            {
+                path: '',
+                redirect: { name: 'EventList' },
+            },
+            {
+                path: 'events/create',
+                name: 'EventCreate',
+                component: EventCreate,
+                meta: { requiresAuth: true },
+            },
+        ],
+    },
 ];
 
 const router = createRouter({
