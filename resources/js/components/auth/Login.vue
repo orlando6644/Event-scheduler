@@ -30,17 +30,7 @@
                     />
                 </div>
                 <div>
-                    <button
-                        type="submit"
-                        :disabled="isLoading"
-                        class="w-full px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200"
-                    >
-                        <span v-if="isLoading" class="flex items-center justify-center">
-                            <loading-spinner />
-                            Loading...
-                        </span>
-                        <span v-else>Login</span>
-                    </button>
+                    <form-submit-button :loading="isLoading" buttonText="Login" />
                 </div>
             </form>
             <div v-if="error" class="mt-4 text-center text-red-500">
@@ -54,7 +44,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from 'vuex';
-import LoadingSpinner from "@/components/commons/LoadingSpinner.vue";
+import FormSubmitButton from '@/components/commons/FormSubmitButton.vue';
 
 const store = useStore();
 const router = useRouter();
