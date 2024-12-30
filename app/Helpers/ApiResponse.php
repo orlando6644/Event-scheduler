@@ -11,12 +11,12 @@ class ApiResponse
     /**
      * success
      *
-     * @param  array $data
+     * @param  mixed $data
      * @param  string $message
      * @param  int $status
      * @return JsonResponse
      */
-    public static function success(array $data = [], string $message = 'success', int $status = 200): JsonResponse
+    public static function success($data = [], string $message = 'success', int $status = 200): JsonResponse
     {
         return response()->json([
             'status' => 'success',
