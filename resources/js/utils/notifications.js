@@ -16,6 +16,22 @@ const showToast = (icon, title, timer = 4000) => {
     });
 };
 
+const eventUpdateToast = (icon, title, timer = 6000) => {
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: timer,
+        timerProgressBar: false,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+    });
+};
+
 const showSuccessToast = (title, timer) => {
     showToast('success', title, timer);
 };
@@ -24,4 +40,8 @@ const showErrorToast = (title, timer) => {
     showToast('error', title, timer);
 };
 
-export { showSuccessToast, showErrorToast };
+const showEventUpdateToast = (title, timer) => {
+    eventUpdateToast('info', title, timer);
+};
+
+export { showSuccessToast, showErrorToast, showEventUpdateToast };
