@@ -15,10 +15,19 @@ class EventController extends Controller
     ){}
     /**
      * Display a listing of the resource.
+     *
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        try {
+            return ApiResponse::success(
+                $this->eventService->getAll(),
+                'Events retrieved successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 
     /**
