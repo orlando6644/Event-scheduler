@@ -48,6 +48,26 @@ class EventRepository implements EventRepositoryInterface
     }
 
     /**
+     * only the owner of the event can update it
+     *
+     * @param  array $data
+     * @param  int $id
+     * @return array
+     */
+    public function update(array $data, int $id): array
+    {
+        $event = Event::findOrFail($id);
+
+        if ($event->user_id !== auth()->id()) {
+            throw new \Exception("You are not authorized to update this event.");
+        }
+
+        $event->update($data);
+
+        return $event->toArray();
+    }
+
+    /**
      *
      * @param  string $sortBy
      * @return string

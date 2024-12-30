@@ -86,10 +86,21 @@ class EventController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  EventStoreRequest $request
+     * @param  string $id
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(EventStoreRequest $request, string $id): JsonResponse
     {
-        //
+        try {
+            return ApiResponse::success(
+                $this->eventService->update( $request->all(), $id),
+                'Event updated successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 
     /**

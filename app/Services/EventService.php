@@ -43,4 +43,15 @@ class EventService
     {
         return $this->eventRepository->getById((int)$id);
     }
+
+    /**
+     *
+     * @param  array $data
+     * @param  string $id
+     * @return array
+     */
+    public function update(array $data, string $id): array
+    {
+        return $this->eventRepository->update($data, (int)$id);
+    }
 }
