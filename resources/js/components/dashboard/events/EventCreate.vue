@@ -1,6 +1,7 @@
 <template>
     <div class="flex items-center justify-center bg-gray-100 pt-10">
         <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-md">
+            <BackToListLink />
             <h1 class="mb-6 text-2xl font-bold text-center">Create New Event</h1>
             <form @submit.prevent="submitEvent">
                 <div class="mb-4">
@@ -67,12 +68,15 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 import FormSubmitButton from '@/components/commons/FormSubmitButton.vue';
 import { showSuccessToast } from "@/utils/notifications";
+import BackToListLink from "./BackToListLink.vue";
+
+const router = useRouter();
 
 const errors = ref(null);
 const loading = ref(false);
-
 const form = reactive({
   title: "",
   description: "",
@@ -90,6 +94,7 @@ const submitEvent = async (e) => {
         const { data } = await axios.post('/api/events', form);
         showSuccessToast(data.message);
         clearForm();
+        router.push({ name: 'EventList' });
 
     } catch (error) {
         if(error.response.status === 422) {
