@@ -16,13 +16,14 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         try {
             return ApiResponse::success(
-                $this->eventService->getAll(),
+                $this->eventService->getAll($request->only('sortBy')),
                 'Events retrieved successfully'
             );
         } catch (\Exception $e) {

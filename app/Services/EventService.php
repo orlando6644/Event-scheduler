@@ -26,11 +26,11 @@ class EventService
      * Get all events
      * Users will be able to view all events
      *
+     * @param array $data Request data
      * @return Paginator
      */
-    public function getAll(): Paginator
+    public function getAll(array $data): Paginator
     {
-        return $this->eventRepository->getAll((int)self::PER_PAGE);
+        return $this->eventRepository->getAll((int)self::PER_PAGE, $data['sortBy'] ?? '');
     }
-
 }
