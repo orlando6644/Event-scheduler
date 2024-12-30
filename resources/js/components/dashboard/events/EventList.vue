@@ -59,7 +59,7 @@ import EventRow from "./EventRow.vue";
 import { useStore } from 'vuex';
 import { showErrorToast } from '@/utils/notifications';
 import ColorLoadingSpinner from '@/components/commons/ColorLoadingSpinner.vue';
-
+import eventBus from '@/plugins/eventBus';
 
 const router = useRouter();
 const store = useStore();
@@ -70,6 +70,9 @@ const sortOrder = ref('recent');
 
 onMounted(() => {
     fetchEvents();
+
+    eventBus.on('event-updated', handleEventUpdate);
+    eventBus.on('event-created', handleEventCreate);
 });
 
 const fetchEvents = async(page = 1) => {
@@ -102,10 +105,22 @@ const viewEvent = (id) => {
 };
 
 const editEvent = (id) => {
-    console.log(`Editing event ${id}`);
+    router.push({ name: 'EventEdit', params: { id } });
 };
 
 const deleteEvent = (id) => {
     console.log(`Deleting event ${id}`);
 };
-  </script>
+
+const handleEventUpdate = (event) => {
+    const index = events.value.data.findIndex(e => e.id === event.id);
+    if (index !== -1) {
+        events.value.data[index] = event;
+    }
+};
+
+const handleEventCreate = (event) => {
+    events.value.data.unshift(event);
+};
+
+</script>

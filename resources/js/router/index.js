@@ -5,7 +5,7 @@ import Login from '../components/auth/Login.vue';
 import Dashboard from '../components/dashboard/Dashboard.vue';
 
 // lazy loading events components for better performance
-const EventCreate = () => import('../components/dashboard/events/EventCreate.vue');
+const EventForm = () => import('../components/dashboard/events/EventForm.vue');
 const EventList = () => import('../components/dashboard/events/EventList.vue');
 const EventDetail = () => import('../components/dashboard/events/EventDetail.vue');
 
@@ -39,13 +39,19 @@ const routes = [
             {
                 path: 'events/create',
                 name: 'EventCreate',
-                component: EventCreate,
+                component: EventForm,
                 meta: { requiresAuth: true },
             },
             {
                 path: 'events/:id/details',
                 name: 'EventDetail',
                 component: EventDetail,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: 'events/:id/edit',
+                name: 'EventEdit',
+                component: EventForm,
                 meta: { requiresAuth: true },
             },
         ],

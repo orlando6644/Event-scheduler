@@ -13,14 +13,16 @@
           View
         </button>
         <button
-          class="px-2 py-1 ml-2 text-xs font-semibold text-white bg-yellow-500 rounded hover:bg-yellow-600 focus:outline-none focus:ring focus:ring-yellow-200"
-          @click="$emit('edit', event.id)"
+            v-if="isUserEvent()"
+            class="px-2 py-1 ml-2 text-xs font-semibold text-white bg-yellow-500 rounded hover:bg-yellow-600 focus:outline-none focus:ring focus:ring-yellow-200"
+            @click="$emit('edit', event.id)"
         >
           Edit
         </button>
         <button
-          class="px-2 py-1 ml-2 text-xs font-semibold text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-200"
-          @click="$emit('delete', event.id)"
+            v-if="isUserEvent()"
+            class="px-2 py-1 ml-2 text-xs font-semibold text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-200"
+            @click="$emit('delete', event.id)"
         >
           Delete
         </button>
@@ -42,9 +44,14 @@ const props = defineProps({
 });
 const getUserName = (user) => {
     if (user) {
-        return user.id === props.userId ? 'Me' : user.name;
+        return isUserEvent() ? 'Me' : user.name;
     }
 
     return 'Unknown';
-};
-  </script>
+}
+
+const isUserEvent = () => {
+    return props.userId === props.event.user_id;
+}
+
+</script>

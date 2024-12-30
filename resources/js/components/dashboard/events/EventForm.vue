@@ -2,7 +2,7 @@
     <div class="flex items-center justify-center bg-gray-100 pt-10">
         <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-md">
             <BackToListLink />
-            <h1 class="mb-6 text-2xl font-bold text-center">Create New Event</h1>
+            <h1 class="mb-6 text-2xl font-bold text-center">{{ formTitle }}</h1>
             <form @submit.prevent="submitEvent">
                 <div class="mb-4">
                     <label for="title" class="block mb-2 text-sm font-medium text-gray-700">
@@ -55,7 +55,7 @@
                         maxlength="255"
                     />
                 </div>
-                <form-submit-button :loading="loading" buttonText="Create Event" />
+                <form-submit-button :loading="loading" :buttonText="buttonTitle" />
             </form>
             <div v-if="errors" class="mt-4 text-center text-red-500">
                 <ul>
@@ -67,13 +67,21 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from 'vuex';
 import FormSubmitButton from '@/components/commons/FormSubmitButton.vue';
-import { showSuccessToast } from "@/utils/notifications";
+import { showSuccessToast, showErrorToast } from '@/utils/notifications';
 import BackToListLink from "./BackToListLink.vue";
+import { formatDateToDateTimeLocal } from "@/utils/dateUtils";
 
 const router = useRouter();
+const store = useStore();
+
+const eventId = router.currentRoute.value.params.id || null;
+
+const formTitle = eventId ? "Edit Event" : "Create Event";
+const buttonTitle = eventId ? "Update Event" : "Create Event";
 
 const errors = ref(null);
 const loading = ref(false);
@@ -84,14 +92,41 @@ const form = reactive({
   location: "",
 });
 
-const submitEvent = async (e) => {
+onMounted(async() => {
+    if (eventId) {
+        try {
+            const { data } = await axios.get(`/api/events/${eventId}`);
+
+            if (data.data.user_id !== store.getters['auth/user']?.id) {
+                showErrorToast('You are not authorized to edit this event.');
+                router.push({ name: 'EventList' });
+            }
+
+            form.title = data.data.title;
+            form.description = data.data.description;
+            form.start_date = formatDateToDateTimeLocal(data.data.start_date)
+            form.location = data.data.location;
+        } catch (error) {
+            showErrorToast('The event was not found.');
+            router.push({ name: 'EventList' });
+        } finally {
+            loading.value = false;
+        }
+    }
+});
+
+const submitEvent = async(e) => {
     e.preventDefault();
     clearFormError();
 
     loading.value = true;
 
     try {
-        const { data } = await axios.post('/api/events', form);
+        const { data } = await axios({
+            method: eventId ? 'PUT' : 'POST',
+            url: eventId ? `/api/events/${eventId}` : '/api/events',
+            data: form
+        });
         showSuccessToast(data.message);
         clearForm();
         router.push({ name: 'EventList' });
@@ -106,7 +141,7 @@ const submitEvent = async (e) => {
     } finally {
         loading.value = false;
     }
-};
+}
 
 const clearFormError = () => {
     errors.value = null;
