@@ -6,6 +6,7 @@ import Dashboard from '../components/dashboard/Dashboard.vue';
 
 // lazy loading events components for better performance
 const EventCreate = () => import('../components/dashboard/events/EventCreate.vue');
+const EventList = () => import('../components/dashboard/events/EventList.vue');
 
 const routes = [
     {
@@ -27,6 +28,12 @@ const routes = [
             {
                 path: '',
                 redirect: { name: 'EventList' },
+            },
+            {
+                path: 'events',
+                name: 'EventList',
+                component: EventList,
+                meta: { requiresAuth: true },
             },
             {
                 path: 'events/create',
