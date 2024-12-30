@@ -102,7 +102,7 @@ const viewEvent = (id) => {
 };
 
 const editEvent = (id) => {
-    console.log(`Editing event ${id}`);
+    router.push({ name: 'EventEdit', params: { id } });
 };
 
 const deleteEvent = (id) => {
