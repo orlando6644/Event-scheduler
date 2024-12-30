@@ -39,6 +39,16 @@ class EventRepository implements EventRepositoryInterface
 
     /**
      *
+     * @param  int $id
+     * @return array
+     */
+    public function getById(int $id): array
+    {
+        return Event::with('user')->findOrFail($id)->toArray();
+    }
+
+    /**
+     *
      * @param  string $sortBy
      * @return string
      */

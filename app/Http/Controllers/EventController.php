@@ -60,10 +60,20 @@ class EventController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @param  string $id
+     * @return JsonResponse
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
-        //
+        try {
+            return ApiResponse::success(
+                $this->eventService->getById($id),
+                'Event retrieved successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 
     /**

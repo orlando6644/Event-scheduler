@@ -33,4 +33,14 @@ class EventService
     {
         return $this->eventRepository->getAll((int)self::PER_PAGE, $data['sortBy'] ?? '');
     }
+
+    /**
+     *
+     * @param  string $id
+     * @return array
+     */
+    public function getById(string $id): array
+    {
+        return $this->eventRepository->getById((int)$id);
+    }
 }
