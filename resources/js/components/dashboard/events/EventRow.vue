@@ -1,6 +1,6 @@
 <template>
     <tr class="hover:bg-gray-50">
-      <td class="px-4 py-2 text-sm text-gray-700 border border-gray-200">{{ index }}</td>
+      <td class="px-4 py-2 text-sm text-gray-700 border border-gray-200">{{ event.id }}</td>
       <td class="px-4 py-2 text-sm text-gray-700 border border-gray-200">{{ event.title }}</td>
       <td class="px-4 py-2 text-sm text-gray-700 border border-gray-200">{{ event.start_date }}</td>
       <td class="px-4 py-2 text-sm text-gray-700 border border-gray-200">{{ event.location ?? notAvailableString }}</td>
@@ -29,6 +29,8 @@
   </template>
 
 <script setup>
+import { defineProps } from 'vue';
+import { notAvailableString } from '@/utils/constants';
 
 const props = defineProps({
     event: Object,
@@ -38,9 +40,6 @@ const props = defineProps({
         default: 0,
     }
 });
-
-const notAvailableString = 'N/A';
-
 const getUserName = (user) => {
     if (user) {
         return user.id === props.userId ? 'Me' : user.name;
