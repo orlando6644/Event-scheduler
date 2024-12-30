@@ -21,7 +21,9 @@ class EventRepository implements EventRepositoryInterface
     {
         $data['user_id'] = auth()->id();
 
-        return Event::create($data)->toArray();
+        $event = Event::create($data);
+
+        return Event::with('user')->find($event->id)->toArray();
     }
 
     /**
@@ -56,7 +58,7 @@ class EventRepository implements EventRepositoryInterface
      */
     public function update(array $data, int $id): array
     {
-        $event = Event::findOrFail($id);
+        $event = Event::with('user')->findOrFail($id);
 
         if ($event->user_id !== auth()->id()) {
             throw new \Exception("You are not authorized to update this event.");

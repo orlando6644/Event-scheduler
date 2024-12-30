@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\EventCreated;
+use App\Events\EventUpdated;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use Illuminate\Contracts\Pagination\Paginator;
 
@@ -19,7 +21,11 @@ class EventService
      */
     public function create(array $data): array
     {
-        return $this->eventRepository->create($data);
+        $event = $this->eventRepository->create($data);
+
+        broadcast(new EventCreated($event))->toOthers();
+
+        return $event;
     }
 
     /**
@@ -52,6 +58,10 @@ class EventService
      */
     public function update(array $data, string $id): array
     {
-        return $this->eventRepository->update($data, (int)$id);
+        $event = $this->eventRepository->update($data, (int)$id);
+
+        broadcast(new EventUpdated($event))->toOthers();
+
+        return $event;
     }
 }
