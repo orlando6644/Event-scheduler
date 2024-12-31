@@ -31,5 +31,10 @@ const subscribeToPusherChannels = () => {
         eventBus.emit('event-updated', data.event);
         showEventUpdateToast(`Event "${data.event.title}" has been updated!`);
     });
+
+    channel.bind('event.deleted', (data) => {
+        eventBus.emit('event-deleted', data.event);
+        showEventUpdateToast(`Event "${data.event.title}" has been deleted!`);
+    });
 };
 </script>
