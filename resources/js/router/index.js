@@ -1,8 +1,9 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '../store';
-import Login from '../components/auth/Login.vue';
-import Dashboard from '../components/dashboard/Dashboard.vue';
+import Login from '@/components/auth/Login.vue';
+import Dashboard from '@/components/dashboard/Dashboard.vue';
+import NotFound from '@/components/NotFound.vue';
 
 // lazy loading events components for better performance
 const EventForm = () => import('../components/dashboard/events/EventForm.vue');
@@ -56,6 +57,11 @@ const routes = [
             },
         ],
     },
+    {
+        path: '/:pathMatch(.*)*', // Ruta de "catch-all"
+        name: 'NotFound',
+        component: NotFound,
+      },
 ];
 
 const router = createRouter({
@@ -76,12 +82,12 @@ router.beforeEach(async (to, from, next) => {
 
     } else if (to.name === 'Login') {
         if (store.getters['auth/isAuthenticated']) {
-            next({ name: 'Dashboard' });
+            next({ name: 'EventList' });
         } else {
             await store.dispatch('auth/fetchUser');
 
             if (store.getters['auth/isAuthenticated']) {
-                next({ name: 'Dashboard' });
+                next({ name: 'EventList' });
             } else {
                 next();
             }
