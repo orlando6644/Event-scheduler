@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\EventCreated;
+use App\Events\EventDeleted;
 use App\Events\EventUpdated;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -63,5 +64,19 @@ class EventService
         broadcast(new EventUpdated($event))->toOthers();
 
         return $event;
+    }
+
+    /**
+     *
+     * @param  string $id
+     * @return void
+     */
+    public function delete(string $id): void
+    {
+        $event = $this->eventRepository->getById((int)$id);
+
+        $this->eventRepository->delete((int)$event['id']);
+
+        broadcast(new EventDeleted($event))->toOthers();
     }
 }

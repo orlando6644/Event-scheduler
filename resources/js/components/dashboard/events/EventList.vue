@@ -36,7 +36,7 @@
                         :userId="store.getters['auth/user']?.id"
                         @view="viewEvent"
                         @edit="editEvent"
-                        @delete="deleteEvent"
+                        @delete="confirmDeleteEvent"
                     />
                 </tbody>
             </table>
@@ -57,7 +57,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import EventRow from "./EventRow.vue";
 import { useStore } from 'vuex';
-import { showErrorToast } from '@/utils/notifications';
+import { showErrorToast, showConfirmationDialog, showSuccessToast } from '@/utils/notifications';
 import ColorLoadingSpinner from '@/components/commons/ColorLoadingSpinner.vue';
 import eventBus from '@/plugins/eventBus';
 
@@ -73,6 +73,7 @@ onMounted(() => {
 
     eventBus.on('event-updated', handleEventUpdate);
     eventBus.on('event-created', handleEventCreate);
+    eventBus.on('event-deleted', handleEventDelete);
 });
 
 const fetchEvents = async(page = 1) => {
@@ -108,8 +109,26 @@ const editEvent = (id) => {
     router.push({ name: 'EventEdit', params: { id } });
 };
 
-const deleteEvent = (id) => {
-    console.log(`Deleting event ${id}`);
+const confirmDeleteEvent = async(id) => {
+    const result = await showConfirmationDialog('Are you sure?', 'You won\'t be able to revert this!');
+    if (result.isConfirmed) {
+        deleteEvent(id);
+    }
+};
+
+const deleteEvent = async(id) => {
+
+    isLoading.value = true;
+
+    try {
+        const { data } = await axios.delete(`/api/events/${id}`);
+        fetchEvents();
+        showSuccessToast(data.message);
+    } catch (error) {
+        showErrorToast('Failed to delete event.');
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 const handleEventUpdate = (event) => {
@@ -121,6 +140,10 @@ const handleEventUpdate = (event) => {
 
 const handleEventCreate = (event) => {
     events.value.data.unshift(event);
+};
+
+const handleEventDelete = (event) => {
+    events.value.data = events.value.data.filter(e => e.id !== event.id);
 };
 
 </script>

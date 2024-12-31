@@ -55,6 +55,7 @@ class EventRepository implements EventRepositoryInterface
      * @param  array $data
      * @param  int $id
      * @return array
+     * @throws \Exception
      */
     public function update(array $data, int $id): array
     {
@@ -67,6 +68,24 @@ class EventRepository implements EventRepositoryInterface
         $event->update($data);
 
         return $event->toArray();
+    }
+
+    /**
+     * only the owner of the event can delete it
+     *
+     * @param  int $id
+     * @return void
+     * @throws \Exception
+     */
+    public function delete(int $id): void
+    {
+        $event = Event::findOrFail($id);
+
+        if ($event->user_id !== auth()->id()) {
+            throw new \Exception("You are not authorized to delete this event.");
+        }
+
+        $event->delete();
     }
 
     /**

@@ -10,4 +10,5 @@ interface EventRepositoryInterface
     public function getAll(int $perPage, string $sortBy): Paginator;
     public function getById(int $id): array;
     public function update(array $data, int $id): array;
+    public function delete(int $id): void;
 }

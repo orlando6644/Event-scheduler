@@ -105,9 +105,22 @@ class EventController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param  string $id
+     * @return JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        //
+        try {
+            $this->eventService->delete($id);
+
+            return ApiResponse::success(
+                [],
+                'Event deleted successfully',
+                200
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 }
