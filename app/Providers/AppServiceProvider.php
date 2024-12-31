@@ -9,7 +9,6 @@ class AppServiceProvider extends ServiceProvider
 
     //create array of interfaces and their respective implementations
     private $repositories = [
-        \App\Repositories\Contracts\UserRepositoryInterface::class => \App\Repositories\Eloquent\UserRepository::class,
         \App\Repositories\Contracts\EventRepositoryInterface::class => \App\Repositories\Eloquent\EventRepository::class,
     ];
 

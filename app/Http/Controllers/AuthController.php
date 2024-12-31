@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Transformers\UserSessionTransformer;
-use App\Services\UserService;
+use App\Services\LoginService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function __construct(
-        private UserService $userService,
+        private LoginService $loginService,
         private UserSessionTransformer $userSessionTransformer,
     ) {}
     /**
@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (!$this->userService->login($credentials)) {
+        if (!$this->loginService->login($credentials)) {
             return ApiResponse::error('Invalid credentials', [], 401);
         }
 
@@ -53,7 +53,7 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         try {
-            $this->userService->logout();
+            $this->loginService->logout();
 
             return ApiResponse::success(['message' => 'Logged out successfully']);
         } catch (\Throwable $th) {

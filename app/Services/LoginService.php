@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Services;
 
-use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
-class UserRepository implements UserRepositoryInterface
-{
-    /**
+class LoginService
+{   /**
      *
      * @param  array $credentials
      * @return bool
