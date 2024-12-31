@@ -38,5 +38,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ValidationException) {
             return ApiResponse::error('Validation errors.', $exception->errors(), 422);
         }
+
+        return parent::render($request, $exception);
     }
 }
