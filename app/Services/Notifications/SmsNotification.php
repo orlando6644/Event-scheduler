@@ -4,7 +4,7 @@ namespace App\Services\Notifications;
 use App\Contracts\NotificationInterface;
 use Illuminate\Support\Facades\Log;
 
-class SMSNotification implements NotificationInterface
+class SmsNotification implements NotificationInterface
 {
     /**
      *

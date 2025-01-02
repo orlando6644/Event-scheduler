@@ -8,7 +8,7 @@ use App\Events\EventUpdated;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use App\Services\Notifications\EmailNotification;
 use App\Services\Notifications\NotificationManager;
-use App\Services\Notifications\SMSNotification;
+use App\Services\Notifications\SmsNotification;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class EventService
@@ -82,7 +82,7 @@ class EventService
          */
         $notificationManager = new NotificationManager();
         $notificationManager->addNotifier(new EmailNotification());
-        $notificationManager->addNotifier(new SMSNotification());
+        $notificationManager->addNotifier(new SmsNotification());
 
         $notificationManager->sendNotifications($event);
 
