@@ -63,6 +63,10 @@ PUSHER_APP_KEY=your_pusher_app_key
 PUSHER_APP_SECRET=your_pusher_app_secret
 PUSHER_APP_CLUSTER=your_pusher_app_cluster
  ```
+### Generate the application key:
+```bash
+php artisan key:generate
+ ```
 
 ### Database Setup
 -Run the following commands to migrate and seed the database:
