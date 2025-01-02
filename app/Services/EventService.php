@@ -6,6 +6,9 @@ use App\Events\EventCreated;
 use App\Events\EventDeleted;
 use App\Events\EventUpdated;
 use App\Repositories\Contracts\EventRepositoryInterface;
+use App\Services\Notifications\EmailNotification;
+use App\Services\Notifications\NotificationManager;
+use App\Services\Notifications\SMSNotification;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class EventService
@@ -61,7 +64,24 @@ class EventService
     {
         $event = $this->eventRepository->update($data, (int)$id);
 
+        /**
+         * Here we are broadcasting an event to all users except the current user.
+         * This is done by calling the toOthers() method on the broadcast helper function.
+         * This broadcasting could be delegated to a job or a queue to improve performance.
+         */
         broadcast(new EventUpdated($event))->toOthers();
+
+        /**
+         * here's an example of how to use the NotificationManager
+         * In order to send notifications, we need to create an instance of the NotificationManager class
+         * and add the notifiers we want to use.
+         * Factory pattern is used to create the notifiers
+         */
+        $notificationManager = new NotificationManager();
+        $notificationManager->addNotifier(new EmailNotification());
+        $notificationManager->addNotifier(new SMSNotification());
+
+        $notificationManager->sendNotifications($event);
 
         return $event;
     }
