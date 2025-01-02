@@ -58,7 +58,7 @@ const routes = [
         ],
     },
     {
-        path: '/:pathMatch(.*)*', // Ruta de "catch-all"
+        path: '/:pathMatch(.*)*', // 404 page
         name: 'NotFound',
         component: NotFound,
       },

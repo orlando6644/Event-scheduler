@@ -4,6 +4,9 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * all the login related logic will be handled here
+ */
 class LoginService
 {   /**
      *

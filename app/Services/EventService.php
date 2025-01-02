@@ -12,6 +12,9 @@ class EventService
 {
     private const PER_PAGE = 10;
 
+    /**
+    * repository pattern has been used to interact with the database
+    */
     public function __construct(
         private EventRepositoryInterface $eventRepository
     ){}

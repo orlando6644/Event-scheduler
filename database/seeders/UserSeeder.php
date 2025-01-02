@@ -12,7 +12,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //Example users to test the application
+        /**
+         * in order to have example data, we will create some users
+         */
         $users = [
             [
                 'name' => 'John Doe',

@@ -4,6 +4,11 @@ namespace App\Repositories\Contracts;
 
 use Illuminate\Contracts\Pagination\Paginator;
 
+/*
+* in order to apply the repository pattern,
+* we need to create an interface that will define the methods that will be implemented in the repository class.
+*/
+
 interface EventRepositoryInterface
 {
     public function create(array $data): array;
