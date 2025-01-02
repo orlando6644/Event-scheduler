@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Services;
 
-use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
-class UserRepository implements UserRepositoryInterface
-{
-    /**
+class LoginService
+{   /**
      *
      * @param  array $credentials
      * @return bool
@@ -24,8 +22,9 @@ class UserRepository implements UserRepositoryInterface
     public function logout(): bool
     {
         Auth::guard('web')->logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        $request = request();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return true;
     }
