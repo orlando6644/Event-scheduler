@@ -94,6 +94,7 @@ const form = reactive({
 
 onMounted(async() => {
     if (eventId) {
+        loading.value = true;
         try {
             const { data } = await axios.get(`/api/events/${eventId}`);
 

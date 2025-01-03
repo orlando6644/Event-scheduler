@@ -74,6 +74,14 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed --class=UserSeeder
  ```
+
+### Initial Test User
+
+To help you explore and test the application, a default user has been created with the following credentials:
+
+- **Email**: `test1@test.com`  
+- **Password**: `password`  
+
 ### Real-Time Features
 - Pusher Integration: Ensure you have a valid Pusher account and credentials configured in .env.
 - Event Broadcasting: Laravel events such as EventCreated and EventUpdated are used to broadcast updates.

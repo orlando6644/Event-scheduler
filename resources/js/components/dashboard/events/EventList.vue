@@ -27,7 +27,7 @@
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600 border border-gray-200">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="events.data?.length > 0 && !isLoading">
                     <EventRow
                         v-for="(event, index) in events.data"
                         :key="event.id"
@@ -38,6 +38,11 @@
                         @edit="editEvent"
                         @delete="confirmDeleteEvent"
                     />
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td class="px-4 py-2 text-center text-sm font-medium text-gray-600 border border-gray-200" colspan="6">No events found.</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="mt-4 flex justify-center">

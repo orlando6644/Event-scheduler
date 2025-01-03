@@ -7,7 +7,16 @@ export default {
             const { data } = await axios.post('/api/login', credentials);
             commit('SET_USER', data.data.user);
         } catch (error) {
-            throw new Error(error.response?.data?.message || 'Login failed');
+            let errors = '';
+
+            if(error.response.status === 422) {
+                const validationErrors = error.response.data.errors || {};
+                errors = Object.values(validationErrors)[0][0] || 'Login failed';
+            } else {
+                errors = error.response.data.message || 'An error occurred. Please try again.';
+            }
+
+            throw new Error(errors);
         }
     },
     async logout({ commit }) {

@@ -9,8 +9,14 @@ use Illuminate\Contracts\Pagination\Paginator;
 class EventRepository implements EventRepositoryInterface
 {
     public CONST SORT_FIELD_MAP = [
-        'recent' => 'created_at',
-        'upcoming' => 'start_date',
+        'recent' => [
+            'created_at',
+            'desc'
+        ],
+        'upcoming' => [
+            'start_date',
+            'asc'
+        ]
     ];
     /**
      *
@@ -34,8 +40,9 @@ class EventRepository implements EventRepositoryInterface
      */
     public function getAll(int $perPage = 10, $sortBy = ''): Paginator
     {
+        [$sortByField, $sortByDirection] = $this->mapSortBy($sortBy);
         return Event::with('user')
-        ->orderBy($this->mapSortBy($sortBy), 'desc')
+        ->orderBy($sortByField, $sortByDirection)
         ->paginate($perPage);
     }
 
@@ -91,10 +98,10 @@ class EventRepository implements EventRepositoryInterface
     /**
      *
      * @param  string $sortBy
-     * @return string
+     * @return array
      */
-    private function mapSortBy(string $sortBy): string
+    private function mapSortBy(string $sortBy): array
     {
-        return self::SORT_FIELD_MAP[$sortBy] ?? 'created_at';
+        return self::SORT_FIELD_MAP[$sortBy] ?? self::SORT_FIELD_MAP['recent'];
     }
 }
